@@ -1,25 +1,34 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { Provider } from "react-redux";
-import { createStore, applyMiddleware } from "redux";
-import { BrowserRouter } from "react-router-dom";
-import reducers from "./reducers";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware, compose } from 'redux';
+import { Router, Switch, Route } from 'react-router-dom';
+import reducers from './reducers';
 
-import Layout from "./components/layout";
 
-const createStoreWithMiddleware = applyMiddleware()(createStore);
+const createStoreWithMiddleware = applyMiddleware()(compose((window.devToolsExtension ? window.devToolsExtension() : f => f)(createStore)));
 
-import "./style/main.scss";
+import './style/import.scss';
+
+import history from './history';
+import Layout from './components/layout';
+import SignIn from './components/auth/signin';
+import SignUp from './components/auth/signup';
 
 function main() {
-  ReactDOM.render(
-    <Provider store={createStoreWithMiddleware(reducers)}>
-      <BrowserRouter>
-        <Layout></Layout>
-      </BrowserRouter>
-    </Provider>,
-    document.querySelector(".app-wrapper")
-  );
+    ReactDOM.render(
+        <Provider store={createStoreWithMiddleware(reducers)}>
+            <Router history={history}>
+                <Layout>
+                    <Switch>
+                        <Route path="/" exact component={SignIn}/>
+                        <Route path="/signup" exact component={SignUp}/>
+                    </Switch>
+                </Layout>
+            </Router>
+        </Provider>,
+        document.querySelector('.app-wrapper')
+    );
 }
 
-document.addEventListener("DOMContentLoaded", main);
+document.addEventListener('DOMContentLoaded', main);
