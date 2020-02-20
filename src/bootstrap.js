@@ -9,7 +9,7 @@ import Layout from "./components/layout";
 
 const createStoreWithMiddleware = applyMiddleware()(createStore);
 
-import "./style/main.scss";
+import "./style/import.scss";
 
 function main() {
   ReactDOM.render(
